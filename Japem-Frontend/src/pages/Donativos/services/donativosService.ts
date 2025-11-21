@@ -48,6 +48,12 @@ export const getDonantes = async () => {
   return response.data;
 };
 
+// GET: Donante por ID (para editar)
+export const getDonanteById = async (id: string) => {  // Corregido: string
+  const response = await axios.get(`${API_URL}/donantes/${id}`);
+  return response.data;
+};
+
 // POST: Crear donante
 export const createDonante = async (donanteData: {
   fecha: string;
@@ -65,5 +71,11 @@ export const createDonante = async (donanteData: {
 // PUT: Actualizar donativo
 export const updateDonativo = async (id: string, donativoData: any) => {
   const response = await axios.put(`${API_URL}/donativos/${id}`, donativoData);
+  return response.data;
+};
+
+// PUT: Actualizar donante
+export const updateDonante = async (id: string, donanteData: any) => {
+  const response = await axios.put(`${API_URL}/donantes/${id}`, donanteData);
   return response.data;
 };

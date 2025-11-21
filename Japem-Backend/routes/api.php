@@ -11,6 +11,7 @@ Route::get('/donativos/{id}', [DonativoController::class, 'show']); //  <-- Nuev
 Route::put('/donativos/{id}', [DonativoController::class, 'update']); // <-- Nueva ruta PUT
 
 
-Route::get('/donantes', [DonanteController::class, 'index']);
-Route::get('/donantes/{id}', [DonanteController::class, 'show']);
+Route::get('/donantes', [DonanteController::class, 'index']);// <-- Nueva ruta GET
+Route::get('/donantes/{id}', [DonanteController::class, 'show']); //  <-- Nueva ruta GET
 Route::post('/donantes', [DonanteController::class, 'store']); // <-- Nueva ruta POST
+Route::put('/donantes/{id}', [DonanteController::class, 'update']); // <-- Nueva ruta PUT
