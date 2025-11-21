@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import { Header } from "./components/layout/Header";
 import Home from "./pages/Home";
 import { Donativos } from "./pages/Donativos";
@@ -8,9 +13,9 @@ import { PrivateRoute } from "./components/layout/PrivateRoute";
 // Componente auxiliar para controlar qué se muestra según la ruta
 const Layout = () => {
   const location = useLocation();
-  
+
   // Verificamos si la ruta actual es "/login"
-  const isLoginPage = location.pathname === '/login';
+  const isLoginPage = location.pathname === "/login";
 
   return (
     <>
@@ -20,7 +25,7 @@ const Layout = () => {
       {/* Si NO es login, agregamos padding superior (pt-20) para no tapar contenido.
          Si ES login, quitamos el padding para que quede centrado perfecto.
       */}
-      <div className={`${isLoginPage ? '' : 'pt-20'} min-h-screen bg-gray-50`}>
+      <div className={`${isLoginPage ? "" : "pt-20"} min-h-screen bg-gray-50`}>
         <Routes>
           {/* Rutas Públicas */}
           <Route path="/" element={<Home />} />

@@ -1,32 +1,33 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     try {
-      const response = await axios.post('http://localhost:8000/api/login', {
+      const response = await axios.post("http://localhost:8000/api/login", {
         email,
-        password
+        password,
       });
 
-      localStorage.setItem('token', response.data.access_token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`;
+      localStorage.setItem("token", response.data.access_token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.access_token}`;
       // Redirigir a la página de inicio
-      navigate('/'); // Ajustado para ir a la página de inicio
-      
+      navigate("/"); // Ajustado para ir a la página de inicio
     } catch (err) {
       console.error(err);
-      setError('Credenciales inválidas o error de conexión');
+      setError("Credenciales inválidas o error de conexión");
     }
   };
 
@@ -34,19 +35,18 @@ export const Login = () => {
     // CONTENEDOR PRINCIPAL DE LA PÁGINA
     // Usamos flex-col para poner el logo ARRIBA de la tarjeta
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
-      
       {/* 1. LOGO Y TÍTULO (FUERA DE LA TARJETA) */}
       <div className="flex flex-col items-center text-center mb-8">
-        <img 
-            src="/Logo.png" 
-            alt="Junta de Asistencia Privada" 
-            className="h-18 w-auto object-contain mb-4 drop-shadow-sm" 
+        <img
+          src="/Logo.png"
+          alt="Junta de Asistencia Privada"
+          className="h-18 w-auto object-contain mb-4 drop-shadow-sm"
         />
         <h1 className="text-3xl font-black text-gray-800 uppercase tracking-wider">
-            Junta de Asistencia Privada del Estado de México
+          Junta de Asistencia Privada del Estado de México
         </h1>
         <p className="text-lg text-gray-600 font-medium mt-1 italic font-serif">
-            Juntos hacemos la diferencia
+          Juntos hacemos la diferencia
         </p>
       </div>
 
@@ -55,16 +55,18 @@ export const Login = () => {
         <h2 className="text-2xl font-semibold text-center text-gray-700">
           Bienvenido(a)
         </h2>
-        
+
         {error && (
           <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
             {error}
           </div>
-        )} 
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Correo Electrónico
+            </label>
             <input
               type="email"
               value={email}
@@ -76,7 +78,9 @@ export const Login = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Contraseña
+            </label>
             <input
               type="password"
               value={password}

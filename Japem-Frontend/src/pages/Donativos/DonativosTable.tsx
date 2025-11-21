@@ -29,6 +29,37 @@ export const DonativosTable = () => {
     veces_don: "",
   });
 
+  // DEFINIMOS LAS OPCIONES DE LA POBLACIÓN
+  const poblacionOptions = [
+    "NIÑAS",
+    "NIÑOS",
+    "NIÑAS Y NIÑOS",
+    "ADOLESCENTES",
+    "ADULTOS",
+    "ADULTOS MAYORES",
+    "SIN DATO",
+  ];
+
+  //Se define el estatus de los donativos
+  const estatusOptions = [
+    "ACTIVO",
+    "INACTIVO",
+    "NUEVA CONSTITUCIÓN",
+    "EN PROCESO",
+    "SIN DATO",
+  ];
+
+  // DEFINIMOS LAS OPCIONES DEL RUBRO
+  const rubroOptions = [
+    "ANCIANOS",
+    "DESARROLLO SOCIAL",
+    "EDUCACIÓN",
+    "MÉDICO",
+    "NIÑAS, NIÑOS Y ADOLESCENTES",
+    "PERSONAS CON DISCAPACIDAD",
+    "SIN DATO",
+  ];
+
   const labels: Record<string, string> = {
     id_japem: "ID",
     nombre: "Nombre",
@@ -78,17 +109,12 @@ export const DonativosTable = () => {
     }
   };
 
-  // ✅ Nueva versión mejorada
   const formatAsList = (text: string | null) => {
     if (!text) return "";
-
-    // Dividir solo por salto de línea o punto y coma
     const items = text
       .split(/\r?\n|;/)
       .map((t) => t.trim())
       .filter(Boolean);
-
-    // Crear lista HTML con viñetas
     return `<ul class="list-disc list-inside text-gray-800 leading-relaxed">${items
       .map((i) => `<li>${i}</li>`)
       .join("")}</ul>`;
@@ -96,7 +122,6 @@ export const DonativosTable = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
       const uppercaseForm = Object.keys(donativoForm).reduce(
         (acc: any, key) => {
@@ -109,9 +134,6 @@ export const DonativosTable = () => {
 
       const payload = {
         ...uppercaseForm,
-        necesidad_pri: uppercaseForm.necesidad_pri,
-        necesidad_sec: uppercaseForm.necesidad_sec,
-        necesidad_com: uppercaseForm.necesidad_com,
         certificacion: uppercaseForm.certificacion === "SI",
         candidato: uppercaseForm.candidato === "SI",
         donataria_aut: uppercaseForm.donataria_aut === "SI",
@@ -248,32 +270,107 @@ export const DonativosTable = () => {
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-3">
-              {/* Campos normales */}
+              {/* 2. CAMPOS NORMALES (ELIMINÉ 'RUBRO' DE AQUÍ) */}
               {[
                 "id_japem",
                 "nombre",
-                "estatus",
-                "rubro",
+                // "estatus",
+                // "rubro", <--- SE ELIMINÓ DE AQUÍ
                 "act_asistencial",
-                "poblacion",
+                //"poblacion",
               ].map((key) => (
-                <input
-                  key={key}
-                  type="text"
-                  placeholder={
-                    labels[key] || key.replace(/_/g, " ").toUpperCase()
-                  }
-                  value={donativoForm[key]}
+                <div key={key}>
+                  <label className="block text-sm font-semibold mb-1 uppercase">
+                    {labels[key]}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={labels[key]}
+                    value={donativoForm[key]}
+                    onChange={(e) =>
+                      setDonativoForm({
+                        ...donativoForm,
+                        [key]: e.target.value.toUpperCase(),
+                      })
+                    }
+                    className="border border-gray-300 p-2 w-full rounded text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 uppercase"
+                    required={key === "id_japem" || key === "nombre"}
+                  />
+                </div>
+              ))}
+
+              <div>
+                <label className="block text-sm font-semibold mb-1 uppercase">
+                  {labels.poblacion}
+                </label>
+                <select
+                  value={donativoForm.poblacion}
                   onChange={(e) =>
                     setDonativoForm({
                       ...donativoForm,
-                      [key]: e.target.value.toUpperCase(),
+                      poblacion: e.target.value,
                     })
                   }
-                  className="border border-gray-300 p-2 w-full rounded text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 uppercase"
-                  required={key === "id_japem" || key === "nombre"}
-                />
-              ))}
+                  className="border border-gray-300 p-2 w-full rounded text-black focus:outline-none focus:ring-2 focus:ring-blue-400 uppercase"
+                  required
+                >
+                  <option value="">SELECCIONE LA POBLACIÓN</option>
+                  {poblacionOptions.map((opcion) => (
+                    <option key={opcion} value={opcion}>
+                      {opcion}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1 uppercase">
+                  {labels.estatus}
+                </label>
+                <select
+                  value={donativoForm.estatus}
+                  onChange={(e) =>
+                    setDonativoForm({
+                      ...donativoForm,
+                      estatus: e.target.value,
+                    })
+                  }
+                  className="border border-gray-300 p-2 w-full rounded text-black focus:outline-none focus:ring-2 focus:ring-blue-400 uppercase"
+                  required
+                >
+                  <option value="">SELECCIONE UN ESTATUS</option>
+                  {estatusOptions.map((opcion) => (
+                    <option key={opcion} value={opcion}>
+                      {opcion}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* 3. NUEVO SELECT PARA RUBRO */}
+              <div>
+                <label className="block text-sm font-semibold mb-1 uppercase">
+                  {labels.rubro}
+                </label>
+                <select
+                  value={donativoForm.rubro}
+                  onChange={(e) =>
+                    setDonativoForm({
+                      ...donativoForm,
+                      rubro: e.target.value,
+                    })
+                  }
+                  className="border border-gray-300 p-2 w-full rounded text-black focus:outline-none focus:ring-2 focus:ring-blue-400 uppercase"
+                  required
+                >
+                  <option value="">SELECCIONE UN RUBRO</option>
+                  {rubroOptions.map((opcion) => (
+                    <option key={opcion} value={opcion}>
+                      {opcion}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
               {/* Textareas */}
               {["necesidad_pri", "necesidad_sec", "necesidad_com"].map(

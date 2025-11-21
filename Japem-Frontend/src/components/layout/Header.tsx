@@ -6,7 +6,7 @@ import axios from "axios";
 export const Header: FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   const linkClass = (path: string) =>
     `transition-colors ${
@@ -18,17 +18,21 @@ export const Header: FC = () => {
   const handleLogout = async () => {
     try {
       if (token) {
-          // Intentar invalidar token en backend
-          await axios.post('http://localhost:8000/api/logout', {}, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+        // Intentar invalidar token en backend
+        await axios.post(
+          "http://localhost:8000/api/logout",
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
       }
     } catch (error) {
       console.error("Error cerrando sesión", error);
     } finally {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      navigate('/login');
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/login");
     }
   };
 
@@ -43,12 +47,20 @@ export const Header: FC = () => {
         </div>
 
         <nav className="flex space-x-6 text-sm">
-          <Link to="/" className={linkClass("/")}>Inicio</Link>
+          <Link to="/" className={linkClass("/")}>
+            Inicio
+          </Link>
           {token && (
             <>
-              <Link to="/donativos" className={linkClass("/donativos")}>Donativos</Link>
-              <Link to="/archivo" className={linkClass("/archivo")}>Archivo</Link>
-              <Link to="/contabilidad" className={linkClass("/contabilidad")}>Contabilidad</Link>
+              <Link to="/donativos" className={linkClass("/donativos")}>
+                Donativos
+              </Link>
+              <Link to="/archivo" className={linkClass("/archivo")}>
+                Archivo
+              </Link>
+              <Link to="/contabilidad" className={linkClass("/contabilidad")}>
+                Contabilidad
+              </Link>
             </>
           )}
         </nav>
@@ -63,7 +75,7 @@ export const Header: FC = () => {
                 <Settings className="w-5 h-5 text-black stroke-2" />
               </button>
               <div className="h-6 w-px bg-gray-300 mx-2"></div>
-              <button 
+              <button
                 onClick={handleLogout}
                 className="p-2 rounded-full bg-transparent hover:bg-red-100 text-black transition flex items-center gap-2"
                 title="Cerrar Sesión"
@@ -72,8 +84,8 @@ export const Header: FC = () => {
               </button>
             </>
           ) : (
-            <Link 
-              to="/login" 
+            <Link
+              to="/login"
               className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-800 px-3 py-2 rounded hover:bg-blue-50 transition"
             >
               <User className="w-4 h-4" />
